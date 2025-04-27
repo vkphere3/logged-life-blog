@@ -3,6 +3,9 @@ import tailwind from '@astrojs/tailwind';
 import rehypeExternalLinks from 'rehype-external-links';
 import remarkGfm from 'remark-gfm';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 export default defineConfig({
   integrations: [tailwind()],
   markdown: {
