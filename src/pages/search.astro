@@ -1,0 +1,94 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PostCard from '../components/PostCard.astro';
+import { searchPosts } from '../lib/notion';
+
+// Get search query from URL
+const query = Astro.url.searchParams.get('q') || '';
+
+// Get search results
+const posts = query ? await searchPosts(query) : [];
+---
+
+<Layout title={`Search: ${query}`}>
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+    <div class="max-w-4xl mx-auto">
+      <div class="mb-8">
+        <h1 class="text-3xl sm:text-4xl font-bold text-secondary-900 dark:text-white mb-6">
+          Search Results
+        </h1>
+        
+        <form action="/search" class="mb-8">
+          <div class="relative">
+            <input
+              type="search"
+              name="q"
+              value={query}
+              placeholder="Search for articles..."
+              class="w-full py-3 pl-12 pr-4 text-base rounded-md border border-secondary-300 dark:border-secondary-700 bg-white dark:bg-secondary-800 text-secondary-900 dark:text-secondary-100 placeholder-secondary-400 dark:placeholder-secondary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 transition-colors"
+            />
+            <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 20 20" 
+                fill="currentColor" 
+                class="w-6 h-6 text-secondary-400"
+              >
+                <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+        </form>
+        
+        <div class="text-secondary-600 dark:text-secondary-400">
+          {query && posts.length === 0 ? (
+            <p>No results found for "{query}"</p>
+          ) : query ? (
+            <p>Found {posts.length} result{posts.length !== 1 ? 's' : ''} for "{query}"</p>
+          ) : (
+            <p>Enter a search term to find articles</p>
+          )}
+        </div>
+      </div>
+      
+      {posts.length > 0 && (
+        <div class="grid gap-6 md:grid-cols-2">
+          {posts.map(post => <PostCard post={post} />)}
+        </div>
+      )}
+      
+      {query && posts.length === 0 && (
+        <div class="bg-white dark:bg-secondary-800 rounded-lg shadow-sm border border-secondary-200 dark:border-secondary-700 p-8 text-center">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke-width="1.5" 
+            stroke="currentColor" 
+            class="w-12 h-12 mx-auto text-secondary-400 dark:text-secondary-500 mb-4"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
+          </svg>
+          <h2 class="text-xl font-semibold text-secondary-900 dark:text-white mb-2">No results found</h2>
+          <p class="text-secondary-600 dark:text-secondary-400 mb-6">
+            We couldn't find any articles matching your search term.
+          </p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a 
+              href="/blog" 
+              class="w-full sm:w-auto px-5 py-2 bg-primary-600 hover:bg-primary-700 dark:bg-primary-700 dark:hover:bg-primary-600 text-white font-medium rounded-md text-center transition-colors"
+            >
+              Browse all articles
+            </a>
+            <a 
+              href="/" 
+              class="w-full sm:w-auto px-5 py-2 border border-secondary-300 dark:border-secondary-600 text-secondary-700 dark:text-secondary-300 hover:bg-secondary-50 dark:hover:bg-secondary-700 font-medium rounded-md text-center transition-colors"
+            >
+              Back to home
+            </a>
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+</Layout>

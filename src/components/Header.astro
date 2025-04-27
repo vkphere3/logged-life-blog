@@ -1,0 +1,136 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const navItems = [
+  { text: 'Home', href: '/' },
+  { text: 'Filmmaking', href: '/tags/filmmaking' },
+  { text: 'Life', href: '/tags/life' },
+  { text: 'My Works', href: '/works' },
+  { text: 'Others', href: '/blog' },
+  { text: 'About', href: '/about' },
+];
+---
+
+<header
+  class="sticky top-0 z-10 bg-white/80 dark:bg-secondary-900/80 backdrop-blur-md border-b border-secondary-200 dark:border-secondary-800 transition-colors"
+>
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <div class="flex-shrink-0">
+        <a href="/" class="flex items-center space-x-2">
+          <span class="text-xl font-bold text-secondary-900 dark:text-white transition-colors">
+            Logged<span class="text-primary-600 dark:text-primary-400">Life</span>
+          </span>
+        </a>
+      </div>
+      
+      <div class="hidden sm:block">
+        <nav class="flex items-center space-x-4">
+          {
+            navItems.map((item) => (
+              <a
+                href={item.href}
+                class="px-3 py-2 text-sm font-medium text-secondary-600 hover:text-secondary-900 dark:text-secondary-300 dark:hover:text-white rounded-md hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors"
+              >
+                {item.text}
+              </a>
+            ))
+          }
+        </nav>
+      </div>
+      
+      <div class="flex items-center space-x-2">
+        <div class="relative">
+          <form action="/search" class="hidden sm:block">
+            <input
+              type="search"
+              name="q"
+              placeholder="Search..."
+              class="w-32 sm:w-44 lg:w-64 py-1.5 pl-10 pr-3 text-sm leading-6 rounded-md border border-secondary-300 dark:border-secondary-700 bg-white dark:bg-secondary-800 text-secondary-900 dark:text-secondary-100 placeholder-secondary-400 dark:placeholder-secondary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 transition-colors"
+            />
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 20 20" 
+                fill="currentColor" 
+                class="w-4 h-4 text-secondary-400"
+              >
+                <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </form>
+        </div>
+        <ThemeToggle />
+        
+        <button
+          id="mobile-menu-button"
+          type="button"
+          class="sm:hidden p-2 rounded-md text-secondary-400 hover:text-secondary-900 dark:hover:text-white hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors"
+          aria-label="Toggle mobile menu"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="sm:hidden hidden">
+    <div class="px-2 pt-2 pb-3 space-y-1 border-t border-secondary-200 dark:border-secondary-800">
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class="block px-3 py-2 rounded-md text-base font-medium text-secondary-600 hover:text-secondary-900 dark:text-secondary-300 dark:hover:text-white hover:bg-secondary-100 dark:hover:bg-secondary-800 transition-colors"
+          >
+            {item.text}
+          </a>
+        ))
+      }
+      <form action="/search" class="mt-4 px-3">
+        <input
+          type="search"
+          name="q"
+          placeholder="Search..."
+          class="w-full py-1.5 pl-10 pr-3 text-sm leading-6 rounded-md border border-secondary-300 dark:border-secondary-700 bg-white dark:bg-secondary-800 text-secondary-900 dark:text-secondary-100 placeholder-secondary-400 dark:placeholder-secondary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 transition-colors"
+        />
+        <div class="absolute inset-y-0 left-3 flex items-center pl-3 pointer-events-none">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            viewBox="0 0 20 20" 
+            fill="currentColor" 
+            class="w-4 h-4 text-secondary-400"
+          >
+            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+          </svg>
+        </div>
+      </form>
+    </div>
+  </div>
+</header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (mobileMenuButton && mobileMenu) {
+      mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+  });
+</script>

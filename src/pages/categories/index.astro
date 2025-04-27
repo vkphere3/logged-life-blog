@@ -1,0 +1,83 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getAllCategories } from '../../lib/notion';
+
+// Get categories
+const categories = await getAllCategories();
+
+// Get color class for category based on Notion color
+const getCategoryColorClass = (color) => {
+  const colorMap = {
+    blue: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
+    green: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+    red: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
+    yellow: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
+    orange: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
+    purple: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
+    pink: 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-300',
+    gray: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300',
+    default: 'bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-300',
+  };
+  
+  return colorMap[color] || colorMap.default;
+};
+---
+
+<Layout title="Categories">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl sm:text-4xl font-bold text-secondary-900 dark:text-white mb-8">
+        Browse by Category
+      </h1>
+      
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {categories.map((category) => (
+          <a 
+            href={`/categories/${category.name.toLowerCase()}`}
+            class="bg-white dark:bg-secondary-800 rounded-lg shadow-sm hover:shadow-md transition-shadow p-6 border border-secondary-200 dark:border-secondary-700 flex flex-col items-center text-center group"
+          >
+            <span 
+              class={`inline-block px-4 py-2 rounded-full text-sm font-medium mb-4 ${getCategoryColorClass(category.color)}`}
+            >
+              {category.name}
+            </span>
+            
+            <h2 class="text-xl font-bold text-secondary-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+              {category.name}
+            </h2>
+            
+            <p class="text-secondary-600 dark:text-secondary-400 text-sm">
+              Browse articles in this category
+            </p>
+            
+            <div class="mt-4 text-primary-600 dark:text-primary-400 group-hover:text-primary-800 dark:group-hover:text-primary-300 transition-colors">
+              View articles
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 inline-block ml-1 transform group-hover:translate-x-1 transition-transform"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
+              </svg>
+            </div>
+          </a>
+        ))}
+      </div>
+      
+      {categories.length === 0 && (
+        <div class="text-center py-12">
+          <p class="text-xl text-secondary-600 dark:text-secondary-400">
+            No categories found.
+          </p>
+        </div>
+      )}
+    </div>
+  </div>
+</Layout>

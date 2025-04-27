@@ -1,0 +1,32 @@
+---
+import { getPostBySlug, getAllPosts } from '../../lib/notion';
+import PostLayout from '../../layouts/PostLayout.astro';
+import { marked } from 'marked';
+
+// Generate paths for all posts
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { postId: post.id },
+  }));
+}
+
+// Get post data
+const { slug } = Astro.params;
+const { postId } = Astro.props;
+
+const post = await getPostBySlug(slug);
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+// Parse markdown content to HTML
+const content = marked.parse(post.content || '');
+---
+
+<PostLayout post={post}>
+  <Fragment set:html={content} />
+</PostLayout>

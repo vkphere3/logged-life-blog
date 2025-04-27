@@ -1,0 +1,69 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const works = [
+  {
+    title: "The Passenger",
+    description: "An award-winning short film exploring themes of journey and self-discovery.",
+    image: "https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg",
+    category: "Film",
+    link: "#"
+  },
+  // Add more works as needed
+];
+---
+
+<Layout title="My Works">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl sm:text-4xl font-bold text-secondary-900 dark:text-white mb-6">
+        My Works
+      </h1>
+      
+      <div class="grid gap-8 md:grid-cols-2">
+        {works.map((work) => (
+          <article class="bg-white dark:bg-secondary-800 rounded-lg shadow-sm hover:shadow-md transition-all overflow-hidden border border-secondary-200 dark:border-secondary-700">
+            <div class="aspect-video overflow-hidden">
+              <img
+                src={work.image}
+                alt={work.title}
+                class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+              />
+            </div>
+            <div class="p-6">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-sm font-medium text-primary-600 dark:text-primary-400">
+                  {work.category}
+                </span>
+              </div>
+              <h2 class="text-xl font-bold text-secondary-900 dark:text-white mb-2">
+                {work.title}
+              </h2>
+              <p class="text-secondary-600 dark:text-secondary-300 mb-4">
+                {work.description}
+              </p>
+              <a
+                href={work.link}
+                class="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 font-medium transition-colors"
+              >
+                View Project
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 ml-1"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>
